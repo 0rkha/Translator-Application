@@ -46,8 +46,8 @@ class MyWindow(QMainWindow, form_class):
     def refresh(self):
         global context, flag, result
         if flag:
-            #result = self.get_smt_translte(context)
-            result = self.get_nmt_translte(context)
+            #result = self.get_smt_translate(context)
+            result = self.get_nmt_translate(context)
             flag = 0
             self.textEdit.setText(context)
             self.textEdit_2.setText(result)
