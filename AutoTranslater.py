@@ -8,12 +8,14 @@ from PyQt5.QtWidgets import *
 
 form_class = uic.loadUiType("form.ui")[0]
 
-PAPAGO_USER_ID     = ""
-PAPAGO_USER_SECRET = ""
-context = ""
-result  = ""
-flag    = 0
+PAPAGO_USER_ID     = ""  # client ID
+PAPAGO_USER_SECRET = ""  # client secret
+context = ""             # english request text
+result  = ""             # korean response text
+flag    = 0              # change flag
 
+# 클립보드에 복사된 내용을 실시간으로 받아오는 스레드
+# 클립보드의 내용과 context의 값과 다르면 flag를 0으로 만들고, 새로운 값을 저장한다.
 class Thread(QThread):
     threadEvent = QtCore.pyqtSignal(int)
     def __init__(self, parent=None):
@@ -29,6 +31,10 @@ class Thread(QThread):
             self.threadEvent.emit(context)
             self.msleep(500) 
 
+
+# GUI를 담당하는 class
+# textEdit이 클립보드 출력 textedit widget이고, textEdit2가 번역 결과 출력 textedit widget이다.
+# flag가 1이면(변경사항이 있으면) 번역 결과를 가져와 result에 넣어준다.
 class MyWindow(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
@@ -46,7 +52,8 @@ class MyWindow(QMainWindow, form_class):
             self.textEdit.setText(context)
             self.textEdit_2.setText(result)
     
-    def get_nmt_translte(self, context):
+    # nmt 번역 api
+    def get_nmt_translate(self, context):
         try:
             request_url = "https://openapi.naver.com/v1/papago/n2mt"
             headers= {"X-Naver-Client-Id": USER_ID, "X-Naver-Client-Secret":USER_SECRET}
@@ -57,7 +64,8 @@ class MyWindow(QMainWindow, form_class):
         except:
             return "번역 실패"
             
-    def get_smt_translte(self, context):
+    # smt 번역 api
+    def get_smt_translate(self, context):
         try:
             request_url = "https://openapi.naver.com/v1/language/translate"
             headers= {"X-Naver-Client-Id": USER_ID, "X-Naver-Client-Secret":USER_SECRET}
