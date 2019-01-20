@@ -54,9 +54,10 @@ class MyWindow(QMainWindow, form_class):
     
     # nmt 번역 api
     def get_nmt_translate(self, context):
+        global PAPAGO_USER_ID, PAPAGO_USER_SECRET
         try:
             request_url = "https://openapi.naver.com/v1/papago/n2mt"
-            headers= {"X-Naver-Client-Id": USER_ID, "X-Naver-Client-Secret":USER_SECRET}
+            headers= {"X-Naver-Client-Id": PAPAGO_USER_ID, "X-Naver-Client-Secret":PAPAGO_USER_SECRET}
             params = {"source": "en", "target": "ko", "text": context}
             response = requests.post(request_url, headers=headers, data=params)
             res = response.json()
@@ -66,9 +67,10 @@ class MyWindow(QMainWindow, form_class):
             
     # smt 번역 api
     def get_smt_translate(self, context):
+        global PAPAGO_USER_ID, PAPAGO_USER_SECRET
         try:
             request_url = "https://openapi.naver.com/v1/language/translate"
-            headers= {"X-Naver-Client-Id": USER_ID, "X-Naver-Client-Secret":USER_SECRET}
+            headers= {"X-Naver-Client-Id": PAPAGO_USER_ID, "X-Naver-Client-Secret":PAPAGO_USER_SECRET}
             params = {"source": "en", "target": "ko", "text": context}
             response = requests.post(request_url, headers=headers, data=params)
             res = response.json()
